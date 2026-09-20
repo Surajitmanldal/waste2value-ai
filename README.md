@@ -1,36 +1,321 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ♻️ Waste2Value AI
 
-## Getting Started
+> AI-powered waste identification and recycling guidance built with AWS.
 
-First, run the development server:
+Waste2Value AI is a photo-based waste identification application that helps users understand what type of waste they have and how it can be handled responsibly.
 
-```bash
+Users can upload a photo of an everyday waste item. The application uses **Amazon Rekognition** to identify visual labels from the image and then applies application-level classification logic to convert those labels into useful waste categories and disposal guidance.
+
+---
+
+## 🌱 Problem
+
+People often don't know how to properly dispose of different types of waste.
+
+For example:
+
+- Is a broken charger recyclable?
+- Should a plastic bottle go into recycling?
+- How should electronic waste be handled?
+- What materials might an item contain?
+- Should an item be separated from regular household waste?
+
+Incorrect disposal can cause recyclable materials to be lost and can result in electronic or other special waste being mixed with regular household waste.
+
+Waste2Value AI aims to make this process simpler by allowing users to start with something they already have — **a photo of the waste item**.
+
+---
+
+## 💡 Solution
+
+Waste2Value AI provides a simple workflow:
+
+```text
+📷 Upload a waste image
+        ↓
+☁️ Store the image in Amazon S3
+        ↓
+⚡ Process the request with AWS Lambda
+        ↓
+👁️ Analyze the image with Amazon Rekognition
+        ↓
+🧠 Classify the detected item
+        ↓
+♻️ Provide recycling and disposal guidance
+
+✨ Features
+📷 Upload waste images
+🔍 Image-based waste identification
+♻️ Waste category classification
+📊 Confidence score
+🧱 Material information
+🌱 Recycling guidance
+💡 Practical disposal tips
+📱 Responsive interface
+⚡ Serverless AWS backend
+☁️ Cloud-based image storage
+🏗️ Architecture
+                         ┌─────────────────┐
+                         │     Next.js     │
+                         │    Frontend     │
+                         └────────┬────────┘
+                                  │
+                                  │ POST /upload
+                                  ▼
+                         ┌─────────────────┐
+                         │  API Gateway    │
+                         │    HTTP API     │
+                         └────────┬────────┘
+                                  │
+                                  ▼
+                         ┌─────────────────┐
+                         │   AWS Lambda    │
+                         │                 │
+                         │ Upload + Analyze│
+                         └──────┬─────┬────┘
+                                │     │
+                       ┌────────┘     └─────────┐
+                       ▼                        ▼
+              ┌─────────────────┐      ┌─────────────────┐
+              │   Amazon S3     │      │  Amazon         │
+              │                 │      │  Rekognition    │
+              │  Store Images   │      │  Detect Labels  │
+              └─────────────────┘      └────────┬────────┘
+                                                │
+                                                ▼
+                                       ┌──────────────────┐
+                                       │ Waste Classifier │
+                                       │ Application Logic│
+                                       └────────┬─────────┘
+                                                │
+                                                ▼
+                                       ┌──────────────────┐
+                                       │  Analysis Result │
+                                       │                  │
+                                       │ Category         │
+                                       │ Recyclability    │
+                                       │ Materials        │
+                                       │ Guidance         │
+                                       └──────────────────┘
+☁️ AWS Services Used
+AWS Amplify
+
+AWS Amplify hosts the Next.js frontend and provides the production deployment.
+
+The application is connected to GitHub, allowing the deployed application to be updated from the repository.
+
+Amazon API Gateway
+
+API Gateway provides the HTTP API endpoint used by the frontend.
+
+Current route:
+
+POST /upload
+
+The frontend sends the uploaded image to this endpoint.
+
+AWS Lambda
+
+AWS Lambda handles the backend processing.
+
+The Lambda function:
+
+Receives the uploaded image from API Gateway.
+Converts the request body into an image buffer.
+Generates a unique S3 object key.
+Uploads the image to Amazon S3.
+Sends the stored image to Amazon Rekognition.
+Receives the detected labels.
+Returns the labels to the frontend.
+Amazon S3
+
+Amazon S3 stores the uploaded waste images.
+
+Images are stored using unique object keys such as:
+
+uploads/<unique-id>.<extension>
+Amazon Rekognition
+
+Amazon Rekognition analyzes the uploaded image and detects visual labels.
+
+For example, a broken charger may produce labels such as:
+
+Adapter
+Electronics
+Plug
+Hardware
+
+These labels are then processed by Waste2Value's classification logic.
+
+🧠 Waste Classification
+
+Amazon Rekognition provides visual labels and confidence scores.
+
+Waste2Value then applies application-level classification logic to interpret those labels into waste categories.
+
+Example: E-Waste
+Image
+  ↓
+Amazon Rekognition
+  ↓
+Adapter
+Electronics
+Plug
+  ↓
+Waste Classifier
+  ↓
+E-Waste
+
+The application can then provide:
+
+Category: E-Waste
+Recyclable: Yes
+
+along with relevant disposal guidance.
+
+Example: Plastic
+Image
+  ↓
+Amazon Rekognition
+  ↓
+Bottle
+Plastic
+Container
+  ↓
+Waste Classifier
+  ↓
+Plastic
+Current Categories
+
+The current classification logic supports common categories including:
+
+E-Waste
+Plastic
+Paper
+Glass
+General Waste
+
+The classification layer can be extended with additional categories and waste-specific rules.
+
+🛠️ Tech Stack
+Frontend
+Next.js
+React
+TypeScript
+Tailwind CSS
+AWS
+AWS Amplify
+Amazon API Gateway
+AWS Lambda
+Amazon S3
+Amazon Rekognition
+Development
+Git
+GitHub
+VS Code
+🚀 Live Demo
+
+Live Application:
+
+YOUR_AMPLIFY_URL
+
+💻 Local Development
+Prerequisites
+Node.js 18+
+npm
+Git
+1. Clone the repository
+git clone https://github.com/YOUR_GITHUB_USERNAME/waste2value-ai.git
+2. Navigate to the project
+cd waste2value-ai
+3. Install dependencies
+npm install
+4. Configure environment variables
+
+Create a .env.local file:
+
+NEXT_PUBLIC_API_URL=https://YOUR_API_ID.execute-api.ap-south-1.amazonaws.com
+
+Do not include /upload in the environment variable.
+
+The frontend automatically sends requests to:
+
+POST ${NEXT_PUBLIC_API_URL}/upload
+5. Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
+🔐 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application requires:
 
-## Learn More
+NEXT_PUBLIC_API_URL=
 
-To learn more about Next.js, take a look at the following resources:
+Example:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_API_URL=https://abc123.execute-api.ap-south-1.amazonaws.com
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Do not commit .env.local, AWS credentials, access keys, or other sensitive information to the repository.
 
-## Deploy on Vercel
+🧪 Example
+Broken Charger
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A user uploads a broken charger or adapter.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Amazon Rekognition may identify:
+
+Adapter
+Electronics
+Plug
+Hardware
+
+Waste2Value interprets these labels and displays:
+
+Name: Adapter
+Category: E-Waste
+Recyclable: Yes
+
+The application can then provide guidance such as:
+
+Take electronic items to an authorized e-waste collection center. Do not place electronic chargers in regular household waste.
+
+Plastic Bottle
+
+A user uploads a plastic bottle.
+
+Amazon Rekognition may identify:
+
+Bottle
+Plastic
+Container
+
+Waste2Value interprets these labels as:
+
+Name: Bottle
+Category: Plastic
+Recyclable: Yes
+
+The application can then provide relevant recycling guidance.
+
+🔄 Complete Application Flow
+1. User selects a waste image
+             ↓
+2. Next.js creates the upload request
+             ↓
+3. API Gateway receives POST /upload
+             ↓
+4. AWS Lambda receives the image
+             ↓
+5. Lambda uploads the image to Amazon S3
+             ↓
+6. Lambda sends the S3 image to Rekognition
+             ↓
+7. Rekognition returns visual labels
+             ↓
+8. Waste classifier interprets the labels
+             ↓
+9. Frontend displays the waste analysis
+             ↓
+10. User receives recycling and disposal guidance
