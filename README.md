@@ -43,18 +43,23 @@ Waste2Value AI provides a simple workflow:
         ↓
 ♻️ Provide recycling and disposal guidance
 
-✨ Features
-📷 Upload waste images
-🔍 Image-based waste identification
-♻️ Waste category classification
-📊 Confidence score
-🧱 Material information
-🌱 Recycling guidance
-💡 Practical disposal tips
-📱 Responsive interface
-⚡ Serverless AWS backend
-☁️ Cloud-based image storage
-🏗️ Architecture
+## ✨ Features
+
+- 📷 Upload waste images
+- 🔍 Image-based waste identification
+- ♻️ Waste category classification
+- 📊 Confidence score
+- 🧱 Material information
+- 🌱 Recycling guidance
+- 💡 Practical disposal tips
+- 📱 Responsive interface
+- ⚡ Serverless AWS backend
+- ☁️ Cloud-based image storage
+
+
+## 🏗️ Architecture
+
+```text
                          ┌─────────────────┐
                          │     Next.js     │
                          │    Frontend     │
@@ -215,7 +220,7 @@ GitHub
 VS Code
 🚀 Live Demo
 
-Live Application:
+Live Application:  https://main.d2qycnbnnbyxw6.amplifyapp.com/
 
 YOUR_AMPLIFY_URL
 
@@ -225,7 +230,7 @@ Node.js 18+
 npm
 Git
 1. Clone the repository
-git clone https://github.com/YOUR_GITHUB_USERNAME/waste2value-ai.git
+git clone https://github.com/surajitmanldal/waste2value-ai.git
 2. Navigate to the project
 cd waste2value-ai
 3. Install dependencies
@@ -244,78 +249,13 @@ POST ${NEXT_PUBLIC_API_URL}/upload
 5. Start the development server
 npm run dev
 
-Open:
 
-http://localhost:3000
-🔐 Environment Variables
+🎯 Hackathon
 
-The application requires:
+Waste2Value AI was built for the WeMakeDevs × AWS First Commit Hackathon 2026.
 
-NEXT_PUBLIC_API_URL=
+The project demonstrates how AWS cloud services can be used to address a real-world waste-management problem through an accessible image-based experience.
 
-Example:
 
-NEXT_PUBLIC_API_URL=https://abc123.execute-api.ap-south-1.amazonaws.com
-
-Do not commit .env.local, AWS credentials, access keys, or other sensitive information to the repository.
-
-🧪 Example
-Broken Charger
-
-A user uploads a broken charger or adapter.
-
-Amazon Rekognition may identify:
-
-Adapter
-Electronics
-Plug
-Hardware
-
-Waste2Value interprets these labels and displays:
-
-Name: Adapter
-Category: E-Waste
-Recyclable: Yes
-
-The application can then provide guidance such as:
-
-Take electronic items to an authorized e-waste collection center. Do not place electronic chargers in regular household waste.
-
-Plastic Bottle
-
-A user uploads a plastic bottle.
-
-Amazon Rekognition may identify:
-
-Bottle
-Plastic
-Container
-
-Waste2Value interprets these labels as:
-
-Name: Bottle
-Category: Plastic
-Recyclable: Yes
-
-The application can then provide relevant recycling guidance.
-
-🔄 Complete Application Flow
-1. User selects a waste image
-             ↓
-2. Next.js creates the upload request
-             ↓
-3. API Gateway receives POST /upload
-             ↓
-4. AWS Lambda receives the image
-             ↓
-5. Lambda uploads the image to Amazon S3
-             ↓
-6. Lambda sends the S3 image to Rekognition
-             ↓
-7. Rekognition returns visual labels
-             ↓
-8. Waste classifier interprets the labels
-             ↓
-9. Frontend displays the waste analysis
-             ↓
-10. User receives recycling and disposal guidance
+👨‍💻 Author
+Surajit Mandal
